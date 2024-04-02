@@ -1,0 +1,7 @@
+{
+  "username_validation": "Please enter your username",
+  "password_validation": "Please enter the password",
+  "username_label": "Username",
+  "password_label": "Password",
+  "login_btn_text": "Login"
+}
