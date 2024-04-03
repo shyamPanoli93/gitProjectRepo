@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -6,7 +8,9 @@ import 'package:product_management/auth/login/state/login_state_enum.dart';
 import 'package:product_management/common/widget.dart';
 
 import '../../../assets.dart';
+import '../../../common/constant.dart';
 import '../../../route.dart';
+import '../../../utils/shared_preference.dart';
 
 class LoginBody extends StatelessWidget {
 
@@ -82,6 +86,31 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         ModalRoute.withName("/")
     );
     return false; // return true if the route to be popped
+  }
+
+  Future<Null> getSharedPrefs() async {
+    await SharedPreference()
+        .getStringValue(SharedPrefKeys.pinLogged)
+        .then(
+          (value) {
+        savedPin = value;
+        print("SavedPin:........."+ savedPin);
+      },
+    );
+
+    await SharedPreference()
+        .getBooleanValue(SharedPrefKeys.isLogged)
+        .then((isLogged) {
+      isLoggedApp = isLogged;
+      log("IsLoggedItems:---$isLoggedApp");
+    });
+
+  }
+
+  @override
+  void initState() {
+    getSharedPrefs();
+    super.initState();
   }
 
   @override

@@ -22,33 +22,9 @@ void main() async{
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}):super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-  Future<Null> getSharedPrefs() async {
-    await SharedPreference()
-        .getStringValue(SharedPrefKeys.pinLogged)
-        .then(
-          (value) {
-        savedPin = value;
-        print("SavedPin:........."+ savedPin);
-      },
-    );
-
-  }
-
-
-  @override
-  void initState() {
-    super.initState();
-    getSharedPrefs();
-  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -58,7 +34,7 @@ class _MyAppState extends State<MyApp> {
       theme: theme(),
       routes: routes,
       navigatorKey: ProductionApp.materialKey,
-      initialRoute: savedPin.isEmpty?Routes.welcomeScreen:Routes.loginScreen,
+      initialRoute: Routes.splashScreen,
     );
   }
 }

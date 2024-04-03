@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:product_management/assets.dart';
 import 'package:product_management/utils/shared_preference.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../common/constant.dart';
 import '../../../common/widget.dart';
 import '../../../route.dart';
 
@@ -22,18 +25,67 @@ class _PinLoginPageState extends State<PinLoginPage> {
       ..showSnackBar(
           snackBarWhenFailure(snackBarFailureText: 'Please Enter Pin'));
   }
+
   Future<bool> _willPopCallback() async {
-    Navigator.pushNamedAndRemoveUntil(
-        context,
-        Routes.welcomeScreen,
-        ModalRoute.withName("/")
-    );
+    isLoggedApp
+        ? Navigator.pushNamedAndRemoveUntil(
+            context, Routes.welcomeScreen, ModalRoute.withName("/"))
+        : Navigator.pop(context);
     return false; // return true if the route to be popped
   }
 
+  Future<Null> getSharedPrefs() async {
+    await SharedPreference()
+        .getBooleanValue(SharedPrefKeys.isLogged)
+        .then((isLogged) {
+      isLoggedApp = isLogged;
+      log("IsLoggedItems:---$isLoggedApp");
+    });
+
+    await SharedPreference().getStringValue(SharedPrefKeys.pinLogged).then(
+      (value) {
+        savedPin = value;
+        print("SavedPin:........." + savedPin);
+      },
+    );
+  }
+
+  setUpPin() {
+    if (_pinController.text.isEmpty) {
+      print("fail to Pin generation ---${_pinController.text}");
+      showError();
+    } else {
+      print("Success to Pin generation ---${_pinController.text}");
+      SharedPreference()
+          .setStringValue(SharedPrefKeys.pinLogged, _pinController.text);
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBarWhenSuccess());
+      Navigator.pushNamed(context, Routes.homeScreen);
+    }
+  }
+
+   loginApp(){
+    if (savedPin.isEmpty) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+            snackBarWhenFailure(snackBarFailureText: 'PIN is not set up')
+        );
+    } else if (savedPin == _pinController.text) {
+      Navigator.pushNamed(context, Routes.homeScreen);
+    } else {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+            snackBarWhenFailure(snackBarFailureText:'Invalid PIN')
+        );
+    }
+  }
 
   @override
   void initState() {
+    getSharedPrefs();
     _passwordVisible = false;
   }
 
@@ -57,9 +109,11 @@ class _PinLoginPageState extends State<PinLoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Lottie.asset(pinLoginBg, fit: BoxFit.cover),
-                const Text(
-                  'Set PIN for your App Login',
-                  style: TextStyle(
+                Text(
+                  savedPin.isNotEmpty
+                      ? 'Enter your PIN for App Login'
+                      : 'Set PIN for your App Login',
+                  style: const TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.w800,
                       color: Colors.black),
@@ -103,19 +157,9 @@ class _PinLoginPageState extends State<PinLoginPage> {
                   alignment: Alignment.centerLeft,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_pinController.text.isEmpty) {
-                        showError();
-                      } else {
-                        SharedPreference().setStringValue(
-                            SharedPrefKeys.pinLogged, _pinController.text);
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(
-                              snackBarWhenSuccess());
-                        Navigator.pushNamed(context, Routes.loginScreen);
-                      }
+                      savedPin.isNotEmpty ? loginApp() : setUpPin();
                     },
-                    child: Text('Save'),
+                    child: Text(savedPin.isNotEmpty ? 'Login' : 'Save'),
                   ),
                 ),
               ],

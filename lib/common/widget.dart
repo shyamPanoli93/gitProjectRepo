@@ -63,3 +63,13 @@ SnackBar snackBarWhenSuccess() {
     backgroundColor: Colors.green,
   );
 }
+
+OutlineInputBorder requestFormBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(8.0),
+  borderSide: BorderSide(color: Color(0xffDFE7F6), width: 1),
+);
+
+OutlineInputBorder leaveRequestBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(8.0),
+  borderSide: BorderSide(color: Color(0xffDFE7F6), width: 1),
+);
