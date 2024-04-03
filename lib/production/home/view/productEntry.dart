@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:product_management/service/database.dart';
+import 'package:random_string/random_string.dart';
 
 import '../../../common/widget.dart';
 
@@ -10,6 +14,10 @@ class ProductionEntryScreen extends StatefulWidget {
 }
 
 class _ProductionEntryScreenState extends State<ProductionEntryScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController measurementController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +55,7 @@ class _ProductionEntryScreenState extends State<ProductionEntryScreen> {
                 height: 6,
               ),
               TextFormField(
-                /* controller: cubit.purpose,*/
+                 controller: nameController,
                 style: const TextStyle(fontSize: 12, color: Color(0xFF081731)),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -64,7 +72,7 @@ class _ProductionEntryScreenState extends State<ProductionEntryScreen> {
                 height: 6,
               ),
               TextFormField(
-                /* controller: cubit.purpose,*/
+                 controller: measurementController,
                 style: const TextStyle(fontSize: 12, color: Color(0xFF081731)),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -81,7 +89,7 @@ class _ProductionEntryScreenState extends State<ProductionEntryScreen> {
                 height: 6,
               ),
               TextFormField(
-                /* controller: cubit.purpose,*/
+                 controller: priceController,
                 style: const TextStyle(fontSize: 12, color: Color(0xFF081731)),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -94,8 +102,27 @@ class _ProductionEntryScreenState extends State<ProductionEntryScreen> {
                 height: 20,
               ),
               fullWidthPrimaryButton(context, () {
+                String Id = randomAlphaNumeric(10);
+                CollectionReference productionInfoMap =  FirebaseFirestore.instance.collection('product');
+                productionInfoMap.add({
+                  "name":nameController.text,
+                  "measurement":measurementController.text,
+                  "id":Id,
+                  "price":priceController.text,
+                });
+               /* await DatabaseMethods().addProductionDetails(productionInfoMap, Id).then((value) {
+                  Fluttertoast.showToast(
+                      msg: "Product Details has been uploaded successfully",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                });*/
 
-              }, 'Save'),
+              }, 'Add'),
             ],
           ),
         ),
