@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:product_management/assets.dart';
-import 'package:product_management/auth/login.dart';
+import 'package:product_management/route.dart';
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}):super(key: key);
 
@@ -76,7 +76,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginSignUpScreen(showLogin: true,)));
+                          Navigator.pushNamed(context, Routes.loginScreen);
                         },
                         style: ButtonStyle(
                             padding: MaterialStateProperty.all<EdgeInsets>(
@@ -101,7 +101,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  LoginSignUpScreen(showLogin: false),));
+                          Navigator.pushNamed(context, Routes.signUpScreen);
                         },
                         style: ButtonStyle(
                             padding: MaterialStateProperty.all<EdgeInsets>(

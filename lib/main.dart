@@ -1,9 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
+
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:product_management/app.dart';
+import 'package:product_management/common/app.dart';
 import 'package:product_management/route.dart';
+import 'package:product_management/utils/shared_preference.dart';
 
+import 'common/constant.dart';
 import 'config/themes.dart';
 
 void main() async{
@@ -18,22 +22,43 @@ void main() async{
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}):super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  Future<Null> getSharedPrefs() async {
+    await SharedPreference()
+        .getStringValue(SharedPrefKeys.pinLogged)
+        .then(
+          (value) {
+        savedPin = value;
+        print("SavedPin:........."+ savedPin);
+      },
+    );
+
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    getSharedPrefs();
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      /*localizationsDelegates: context.localizationDelegates,*/
-      /*supportedLocales: context.supportedLocales,*/
-      /*locale: context.locale,*/
       debugShowCheckedModeBanner: false,
       title: 'Production',
       theme: theme(),
       routes: routes,
       navigatorKey: ProductionApp.materialKey,
-      initialRoute: Routes.welcomeScreen,
+      initialRoute: savedPin.isEmpty?Routes.welcomeScreen:Routes.loginScreen,
     );
   }
 }
