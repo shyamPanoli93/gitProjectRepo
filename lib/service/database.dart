@@ -5,4 +5,8 @@ class DatabaseMethods{
         .doc(id)
         .set(productionInfoMap);
   }
+
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>>getProductionDetails()async{
+    return await FirebaseFirestore.instance.collection('product').snapshots();
+  }
 }
