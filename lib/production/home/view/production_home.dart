@@ -46,42 +46,41 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Product Name:' + ds['name'],
-                                  style: const TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'Measurement:' + ds['measurement'],
-                                  style: const TextStyle(
-                                      color: Colors.orange,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'Price:' + ds['price'],
-                                  style: const TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                            Text(
+                              'Product Name:' + ds['name'],
+                              style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
                             ),
-                            QrImageView(
-                              data: ds['name'],
-                              version: QrVersions.auto,
-                              size: 80.0,
+                            Text(
+                              'Measurement:' + ds['measurement'],
+                              style: const TextStyle(
+                                  color: Colors.orange,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
                             ),
+                            Text(
+                              'Price:' + ds['price'],
+                              style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: QrImageView(
+                                data: ds['name'],
+                                version: QrVersions.auto,
+                                size: 80.0,
+                              ),
+                            ),
+
                           ],
-                        ),
+                        )
                       ),
                     ),
                   );
