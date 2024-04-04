@@ -45,6 +45,7 @@ dependencies:
   formz: ^0.7.0
   cloud_firestore: ^4.15.8
   random_string: ^2.3.1
+  qr_flutter: ^4.0.0
   #google_fonts: ^6.1.0
 
 dev_dependencies:
