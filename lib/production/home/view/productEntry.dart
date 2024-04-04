@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:product_management/service/database.dart';
 import 'package:random_string/random_string.dart';
 
 import '../../../common/widget.dart';
@@ -45,17 +43,17 @@ class _ProductionEntryScreenState extends State<ProductionEntryScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-           padding:const EdgeInsetsDirectional.only(
-               start: 32, end: 32, top: 16, bottom: 100),
-          child:  Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsetsDirectional.only(
+              start: 32, end: 32, top: 16, bottom: 100),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text("Product Name", style: TextStyle(fontSize: 20)),
               const SizedBox(
                 height: 6,
               ),
               TextFormField(
-                 controller: nameController,
+                controller: nameController,
                 style: const TextStyle(fontSize: 12, color: Color(0xFF081731)),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -64,7 +62,7 @@ class _ProductionEntryScreenState extends State<ProductionEntryScreen> {
                     filled: true,
                     fillColor: const Color(0xffEEF2F9)),
               ),
-             const SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               const Text("Measurement", style: TextStyle(fontSize: 20)),
@@ -72,7 +70,7 @@ class _ProductionEntryScreenState extends State<ProductionEntryScreen> {
                 height: 6,
               ),
               TextFormField(
-                 controller: measurementController,
+                controller: measurementController,
                 style: const TextStyle(fontSize: 12, color: Color(0xFF081731)),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -89,9 +87,9 @@ class _ProductionEntryScreenState extends State<ProductionEntryScreen> {
                 height: 6,
               ),
               TextFormField(
-                 controller: priceController,
+                controller: priceController,
                 style: const TextStyle(fontSize: 12, color: Color(0xFF081731)),
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                     enabledBorder: requestFormBorder,
                     focusedBorder: requestFormBorder,
@@ -103,25 +101,21 @@ class _ProductionEntryScreenState extends State<ProductionEntryScreen> {
               ),
               fullWidthPrimaryButton(context, () {
                 String Id = randomAlphaNumeric(10);
-                CollectionReference productionInfoMap =  FirebaseFirestore.instance.collection('product');
+                CollectionReference productionInfoMap =
+                    FirebaseFirestore.instance.collection('product');
                 productionInfoMap.add({
-                  "name":nameController.text,
-                  "measurement":measurementController.text,
-                  "id":Id,
-                  "price":priceController.text,
-                });
-               /* await DatabaseMethods().addProductionDetails(productionInfoMap, Id).then((value) {
-                  Fluttertoast.showToast(
-                      msg: "Product Details has been uploaded successfully",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.red,
-                      textColor: Colors.white,
-                      fontSize: 16.0
-                  );
-                });*/
-
+                  "name": nameController.text,
+                  "measurement": measurementController.text,
+                  "id": Id,
+                  "price": priceController.text,
+                }).then(
+                  (value) {
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBarWhenSuccess());
+                    Navigator.pop(context);
+                  },
+                );
               }, 'Add'),
             ],
           ),

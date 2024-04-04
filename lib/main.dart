@@ -5,9 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:product_management/common/app.dart';
 import 'package:product_management/route.dart';
-import 'package:product_management/utils/shared_preference.dart';
 
-import 'common/constant.dart';
 import 'config/themes.dart';
 
 void main() async{
