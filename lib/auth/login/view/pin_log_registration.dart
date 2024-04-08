@@ -1,10 +1,11 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:product_management/assets.dart';
 import 'package:product_management/utils/shared_preference.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../common/constant.dart';
 import '../../../common/widget.dart';
 import '../../../route.dart';
@@ -17,7 +18,8 @@ class PinLoginPage extends StatefulWidget {
 class _PinLoginPageState extends State<PinLoginPage> {
   bool _passwordVisible = false;
   final TextEditingController _pinController = TextEditingController();
-  final String _pinKey = 'pin';
+  bool _isKeyboardVisible = false;
+  final FocusNode _focusNode = FocusNode();
 
   showError() {
     ScaffoldMessenger.of(context)
@@ -65,21 +67,18 @@ class _PinLoginPageState extends State<PinLoginPage> {
     }
   }
 
-   loginApp(){
+  loginApp() {
     if (savedPin.isEmpty) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
-            snackBarWhenFailure(snackBarFailureText: 'PIN is not set up')
-        );
+            snackBarWhenFailure(snackBarFailureText: 'PIN is not set up'));
     } else if (savedPin == _pinController.text) {
       Navigator.pushNamed(context, Routes.homeScreen);
     } else {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(
-            snackBarWhenFailure(snackBarFailureText:'Invalid PIN')
-        );
+        ..showSnackBar(snackBarWhenFailure(snackBarFailureText: 'Invalid PIN'));
     }
   }
 
@@ -87,6 +86,24 @@ class _PinLoginPageState extends State<PinLoginPage> {
   void initState() {
     getSharedPrefs();
     _passwordVisible = false;
+    _focusNode.addListener(
+      () => _onFocusChange,
+    );
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(
+      () => _onFocusChange,
+    );
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _onFocusChange() {
+    setState(() {
+      _isKeyboardVisible = _focusNode.hasFocus;
+    });
   }
 
   @override
@@ -94,21 +111,21 @@ class _PinLoginPageState extends State<PinLoginPage> {
     return WillPopScope(
       onWillPop: () => _willPopCallback(),
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          iconTheme: const IconThemeData(
-            color: Colors.black,
-          ),
-          backgroundColor: Colors.transparent,
-          automaticallyImplyLeading: false,
-        ),
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Lottie.asset(pinLoginBg, fit: BoxFit.cover),
+                const SizedBox(height: 25.0),
+                AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    height: _isKeyboardVisible
+                        ? MediaQuery.of(context).size.height * 0.3
+                        : MediaQuery.of(context).size.height * 0.5,
+                    child: Lottie.asset(pinLoginBg, fit: BoxFit.cover)),
+                const SizedBox(height: 30.0),
                 Text(
                   savedPin.isNotEmpty
                       ? 'Enter your PIN for App Login'
@@ -118,6 +135,7 @@ class _PinLoginPageState extends State<PinLoginPage> {
                       fontWeight: FontWeight.w800,
                       color: Colors.black),
                 ),
+                const SizedBox(height: 20.0),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: const Text(
@@ -128,7 +146,9 @@ class _PinLoginPageState extends State<PinLoginPage> {
                           fontWeight: FontWeight.w300,
                           color: Colors.grey)),
                 ),
+                const SizedBox(height: 20.0),
                 TextField(
+                  focusNode: _focusNode,
                   controller: _pinController,
                   maxLength: 4,
                   decoration: InputDecoration(
@@ -152,14 +172,20 @@ class _PinLoginPageState extends State<PinLoginPage> {
                   keyboardType: TextInputType.number,
                   obscureText: !_passwordVisible,
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 10.0),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                    ),
                     onPressed: () {
                       savedPin.isNotEmpty ? loginApp() : setUpPin();
                     },
-                    child: Text(savedPin.isNotEmpty ? 'Login' : 'Save'),
+                    child: Text(savedPin.isNotEmpty ? 'Login' : 'Save',style: const TextStyle(color: Colors.white),),
                   ),
                 ),
               ],

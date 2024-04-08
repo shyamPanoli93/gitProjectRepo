@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:product_management/common/app.dart';
 import 'package:product_management/route.dart';
 
@@ -10,6 +11,7 @@ import 'config/themes.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   await Firebase.initializeApp(
     options: const FirebaseOptions(
         apiKey: "AIzaSyBSZ4nyhTAXSO_6zaeofhFtqOTDkaoznp4",

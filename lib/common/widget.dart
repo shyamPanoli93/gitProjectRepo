@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:product_management/common/methods.dart';
 
 import '../config/constants.dart';
 
@@ -64,12 +65,13 @@ SnackBar snackBarWhenSuccess() {
   );
 }
 
+
 OutlineInputBorder requestFormBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(8.0),
-  borderSide: BorderSide(color: Color(0xffDFE7F6), width: 1),
+  borderSide: const BorderSide(color: Color(0xffDFE7F6), width: 1),
 );
 
 OutlineInputBorder leaveRequestBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(8.0),
-  borderSide: BorderSide(color: Color(0xffDFE7F6), width: 1),
+  borderSide: const BorderSide(color: Color(0xffDFE7F6), width: 1),
 );

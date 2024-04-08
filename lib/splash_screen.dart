@@ -68,6 +68,13 @@ class _SplashScreenState extends State<SplashScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
+              const SizedBox(
+                height: 50,
+                child: VerticalDivider(
+                  thickness: 2, // Adjust thickness as needed
+                  color: Colors.black26, // Adjust color as needed
+                ),
+              ),
               const Text(
                 'Production',
                 style: TextStyle(

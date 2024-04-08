@@ -33,6 +33,7 @@ class LoginCubit extends Cubit<AuthState?> {
 
     emit(AuthState(AuthStateType.loading));
     try {
+      emit(AuthState(AuthStateType.loading));
       await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
