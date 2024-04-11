@@ -26,9 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-
-
-Widget allProductionDetails() {
+  Widget allProductionDetails() {
     return StreamBuilder(
       stream: productDetailsStream,
       builder: (context, AsyncSnapshot snapshot) {
@@ -38,7 +36,8 @@ Widget allProductionDetails() {
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
                   return Container(
-                    margin: const EdgeInsets.only(bottom: 20.0),
+                    margin: const EdgeInsets.only(
+                        bottom: 20.0, left: 20, right: 20),
                     child: Material(
                       elevation: 5.0,
                       type: MaterialType.transparency,
@@ -46,8 +45,8 @@ Widget allProductionDetails() {
                       child: SingleChildScrollView(
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 36,
+                            horizontal: 10,
+                            vertical: 10,
                           ),
                           decoration: const BoxDecoration(
                             color: Colors.black,
@@ -98,10 +97,11 @@ Widget allProductionDetails() {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 10,),
-
+                              const SizedBox(
+                                height: 10,
+                              ),
                               Text(
-                                toBeginningOfSentenceCase(ds['name'])??"",
+                                toBeginningOfSentenceCase(ds['name']) ?? "",
                                 style: const TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
@@ -122,10 +122,9 @@ Widget allProductionDetails() {
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold),
                               ),
-
                             ],
                           ),
-                        )
+                        ),
                       ),
                     ),
                   );
