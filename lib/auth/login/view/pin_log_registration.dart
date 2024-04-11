@@ -84,6 +84,7 @@ class _PinLoginPageState extends State<PinLoginPage> {
 
   @override
   void initState() {
+    super.initState();
     getSharedPrefs();
     _passwordVisible = false;
     _focusNode.addListener(
